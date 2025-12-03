@@ -1,0 +1,445 @@
+Folder PATH listing
+Volume serial number is 000000A2 2C6F:9BAA
+C:\XAMPP\HTDOCS\GUESTLY\RESOURCES\VIEWS
++---emails
+|       client_profile_link.blade.php
+|       reset-password-email.blade.php
+|       
++---errors
+|       404.blade.php
+|       500.blade.php
+|       
++---layout
+|   |   master.blade.php
+|   |   _auth.blade.php
+|   |   _default.blade.php
+|   |   _default_header_layout.blade.php
+|   |   _system.blade.php
+|   |   
+|   \---partials
+|       +---header-layout
+|       |   |   _footer.blade.php
+|       |   |   _header.blade.php
+|       |   |   _page-title.blade.php
+|       |   |   _toolbar.blade.php
+|       |   |   
+|       |   +---header
+|       |   |   |   _navbar.blade.php
+|       |   |   |   
+|       |   |   \---_menu
+|       |   |           _menu.blade.php
+|       |   |           __dashboards.blade.php
+|       |   |           __layouts.blade.php
+|       |   |           __pages-account.blade.php
+|       |   |           __pages-authentication.blade.php
+|       |   |           __pages-general.blade.php
+|       |   |           __pages-utilities.blade.php
+|       |   |           __pages-widgets.blade.php
+|       |   |           __pages.blade.php
+|       |   |           
+|       |   \---search
+|       |       |   _dropdown.blade.php
+|       |       |   
+|       |       \---partials
+|       |               _advanced-options.blade.php
+|       |               _empty.blade.php
+|       |               _form-dropdown.blade.php
+|       |               _main.blade.php
+|       |               _preferences.blade.php
+|       |               _results.blade.php
+|       |               
+|       \---sidebar-layout
+|           |   _footer.blade.php
+|           |   _header.blade.php
+|           |   _page-title.blade.php
+|           |   _sidebar.blade.php
+|           |   _toolbar.blade.php
+|           |   
+|           +---header
+|           |   |   _navbar.blade.php
+|           |   |   
+|           |   \---_menu
+|           |           _menu.blade.php
+|           |           __dashboards.blade.php
+|           |           __layouts.blade.php
+|           |           __pages-account.blade.php
+|           |           __pages-authentication.blade.php
+|           |           __pages-general.blade.php
+|           |           __pages-utilities.blade.php
+|           |           __pages-widgets.blade.php
+|           |           __pages.blade.php
+|           |           
+|           +---search
+|           |   |   _dropdown.blade.php
+|           |   |   
+|           |   \---partials
+|           |           _advanced-options.blade.php
+|           |           _empty.blade.php
+|           |           _form-dropdown.blade.php
+|           |           _main.blade.php
+|           |           _preferences.blade.php
+|           |           _results.blade.php
+|           |           
+|           \---sidebar
+|                   _footer.blade.php
+|                   _logo.blade.php
+|                   _menu.blade.php
+|                   
++---livewire
+|   +---admin
+|   |       design-specialties.blade.php
+|   |       station-amenities.blade.php
+|   |       supplies.blade.php
+|   |       tattoo-styles.blade.php
+|   |       
+|   +---chat
+|   |       chat-list.blade.php
+|   |       chat-messages.blade.php
+|   |       
+|   +---permission
+|   |       permission-modal.blade.php
+|   |       role-list.blade.php
+|   |       role-modal.blade.php
+|   |       
+|   \---user
+|           add-user-modal.blade.php
+|           
++---pages
+|   +---apps
+|   |   +---admin
+|   |   |   +---amenities
+|   |   |   |       index.blade.php
+|   |   |   |       
+|   |   |   +---design_speciality
+|   |   |   |       index.blade.php
+|   |   |   |       
+|   |   |   +---payments
+|   |   |   |   \---deposits
+|   |   |   |           index.blade.php
+|   |   |   |           _details.blade.php
+|   |   |   |           
+|   |   |   +---plan-management
+|   |   |   |   +---features
+|   |   |   |   |       edit.blade.php
+|   |   |   |   |       index.blade.php
+|   |   |   |   |       
+|   |   |   |   \---plans
+|   |   |   |           edit.blade.php
+|   |   |   |           index.blade.php
+|   |   |   |           
+|   |   |   +---profile
+|   |   |   |       edit.blade.php
+|   |   |   |       
+|   |   |   +---supplies
+|   |   |   |       index.blade.php
+|   |   |   |       
+|   |   |   \---tattoo_style
+|   |   |           index.blade.php
+|   |   |           
+|   |   +---product
+|   |   |       index.blade.php
+|   |   |       
+|   |   \---user-management
+|   |       +---administrators
+|   |       |   |   list.blade.php
+|   |       |   |   show.blade.php
+|   |       |   |   
+|   |       |   +---columns
+|   |       |   |       _actions.blade.php
+|   |       |   |       _draw-scripts.js
+|   |       |   |       _user.blade.php
+|   |       |   |       
+|   |       |   \---modals
+|   |       |           _add-auth-app.blade.php
+|   |       |           _add-one-time-password.blade.php
+|   |       |           _add-schedule.blade.php
+|   |       |           _add-task.blade.php
+|   |       |           _update-details.blade.php
+|   |       |           _update-email.blade.php
+|   |       |           _update-name.blade.php
+|   |       |           _update-password.blade.php
+|   |       |           _update-role.blade.php
+|   |       |           
+|   |       +---artists
+|   |       |   |   list.blade.php
+|   |       |   |   show.blade.php
+|   |       |   |   
+|   |       |   +---columns
+|   |       |   |       _actions.blade.php
+|   |       |   |       _draw-scripts.js
+|   |       |   |       _user.blade.php
+|   |       |   |       
+|   |       |   \---modals
+|   |       |           _add-auth-app.blade.php
+|   |       |           _add-one-time-password.blade.php
+|   |       |           _add-schedule.blade.php
+|   |       |           _add-task.blade.php
+|   |       |           _update-details.blade.php
+|   |       |           _update-email.blade.php
+|   |       |           _update-name.blade.php
+|   |       |           _update-password.blade.php
+|   |       |           _update-role.blade.php
+|   |       |           
+|   |       +---permissions
+|   |       |   |   list.blade.php
+|   |       |   |   
+|   |       |   \---columns
+|   |       |           _actions.blade.php
+|   |       |           _assign-to.blade.php
+|   |       |           _draw-scripts.js
+|   |       |           
+|   |       +---roles
+|   |       |   |   list.blade.php
+|   |       |   |   show.blade.php
+|   |       |   |   
+|   |       |   \---columns
+|   |       |           _actions.blade.php
+|   |       |           _draw-scripts.js
+|   |       |           _user.blade.php
+|   |       |           
+|   |       +---studios
+|   |       |   |   list.blade.php
+|   |       |   |   show.blade.php
+|   |       |   |   
+|   |       |   +---columns
+|   |       |   |       _actions.blade.php
+|   |       |   |       _draw-scripts.js
+|   |       |   |       _user.blade.php
+|   |       |   |       
+|   |       |   \---modals
+|   |       |           _add-auth-app.blade.php
+|   |       |           _add-one-time-password.blade.php
+|   |       |           _add-schedule.blade.php
+|   |       |           _add-task.blade.php
+|   |       |           _update-details.blade.php
+|   |       |           _update-email.blade.php
+|   |       |           _update-name.blade.php
+|   |       |           _update-password.blade.php
+|   |       |           _update-role.blade.php
+|   |       |           
+|   |       \---users
+|   |           |   list.blade.php
+|   |           |   show.blade.php
+|   |           |   
+|   |           +---columns
+|   |           |       _actions.blade.php
+|   |           |       _draw-scripts.js
+|   |           |       _user.blade.php
+|   |           |       
+|   |           \---modals
+|   |                   _add-auth-app.blade.php
+|   |                   _add-one-time-password.blade.php
+|   |                   _add-schedule.blade.php
+|   |                   _add-task.blade.php
+|   |                   _update-details.blade.php
+|   |                   _update-email.blade.php
+|   |                   _update-name.blade.php
+|   |                   _update-password.blade.php
+|   |                   _update-role.blade.php
+|   |                   
+|   +---auth
+|   |       confirm-password.blade.php
+|   |       forgot-password.blade.php
+|   |       login.blade.php
+|   |       register.blade.php
+|   |       reset-password.blade.php
+|   |       verify-email.blade.php
+|   |       
+|   +---chat
+|   |       index.blade.php
+|   |       
+|   +---dashboards
+|   |       index.blade.php
+|   |       
+|   \---system
+|           error.blade.php
+|           not_found.blade.php
+|           
++---partials
+|   |   _drawers.blade.php
+|   |   _modals.blade.php
+|   |   _scrolltop.blade.php
+|   |   
+|   +---drawers
+|   |       _activity-drawer.blade.php
+|   |       _chat-messenger.blade.php
+|   |       _shopping-cart.blade.php
+|   |       
+|   +---general
+|   |       _button-indicator.blade.php
+|   |       _form-tooltip-hint.blade.php
+|   |       _notice.blade.php
+|   |       
+|   +---menus
+|   |       _menu-2.blade.php
+|   |       _menu-3.blade.php
+|   |       _my-apps-menu.blade.php
+|   |       _notifications-menu.blade.php
+|   |       _quick-links-menu.blade.php
+|   |       _user-account-menu.blade.php
+|   |       
+|   +---modals
+|   |   |   _invite-friends.blade.php
+|   |   |   _new-target.blade.php
+|   |   |   _upgrade-plan.blade.php
+|   |   |   _view-users.blade.php
+|   |   |   
+|   |   +---create-app
+|   |   |   |   _main.blade.php
+|   |   |   |   
+|   |   |   \---steps
+|   |   |           _step-1.blade.php
+|   |   |           _step-2.blade.php
+|   |   |           _step-3.blade.php
+|   |   |           _step-4.blade.php
+|   |   |           _step-5.blade.php
+|   |   |           
+|   |   +---create-campaign
+|   |   |   |   _main.blade.php
+|   |   |   |   
+|   |   |   \---steps
+|   |   |           _step-1.blade.php
+|   |   |           _step-2.blade.php
+|   |   |           _step-3.blade.php
+|   |   |           _step-4.blade.php
+|   |   |           _step-5.blade.php
+|   |   |           
+|   |   +---create-project
+|   |   |   |   _main.blade.php
+|   |   |   |   
+|   |   |   \---steps
+|   |   |           _budget.blade.php
+|   |   |           _complete.blade.php
+|   |   |           _files.blade.php
+|   |   |           _settings.blade.php
+|   |   |           _targets.blade.php
+|   |   |           _team.blade.php
+|   |   |           _type.blade.php
+|   |   |           
+|   |   +---new-card
+|   |   |       _form.blade.php
+|   |   |       
+|   |   \---users-search
+|   |       |   _main.blade.php
+|   |       |   
+|   |       \---partials
+|   |               _empty.blade.php
+|   |               _results.blade.php
+|   |               _suggestions.blade.php
+|   |               
+|   +---search
+|   |   |   _dropdown.blade.php
+|   |   |   
+|   |   \---partials
+|   |           _advanced-options.blade.php
+|   |           _empty.blade.php
+|   |           _form-dropdown.blade.php
+|   |           _main.blade.php
+|   |           _preferences.blade.php
+|   |           _results.blade.php
+|   |           
+|   +---theme-mode
+|   |       _init.blade.php
+|   |       _main.blade.php
+|   |       __menu.blade.php
+|   |       
+|   \---widgets
+|       +---cards
+|       |       _widget-17.blade.php
+|       |       _widget-18.blade.php
+|       |       _widget-20.blade.php
+|       |       _widget-7.blade.php
+|       |       
+|       +---charts
+|       |       _widget-14.blade.php
+|       |       _widget-20.blade.php
+|       |       _widget-24.blade.php
+|       |       _widget-27.blade.php
+|       |       _widget-28.blade.php
+|       |       _widget-31.blade.php
+|       |       _widget-35.blade.php
+|       |       _widget-36.blade.php
+|       |       _widget-8.blade.php
+|       |       
+|       +---engage
+|       |       _widget-10.blade.php
+|       |       
+|       +---lists
+|       |       _widget-26.blade.php
+|       |       _widget-7.blade.php
+|       |       _widget-8.blade.php
+|       |       _widget-9.blade.php
+|       |       
+|       \---tables
+|               _widget-14.blade.php
+|               _widget-16.blade.php
+|               
++---user
+|   |   welcome.blade.php
+|   |   
+|   +---common
+|   |       boost_studio.blade.php
+|   |       choose_plan.blade.php
+|   |       doc_verification.blade.php
+|   |       forgot_password.blade.php
+|   |       form_login_signup.blade.php
+|   |       form_slider.blade.php
+|   |       form_slider_two.blade.php
+|   |       map_test.blade.php
+|   |       phone_email_verification.blade.php
+|   |       reset_password.blade.php
+|   |       studio_choose_plan.blade.php
+|   |       studio_step_form.blade.php
+|   |       user_identification.blade.php
+|   |       verify_otp.blade.php
+|   |       welcome.blade.php
+|   |       
+|   +---dashboard
+|   |   |   notification.blade.php
+|   |   |   
+|   |   +---artist
+|   |   |       artist_bio.blade.php
+|   |   |       artist_booking.blade.php
+|   |   |       artist_chat.blade.php
+|   |   |       artist_guest_spot.blade.php
+|   |   |       artist_payment.blade.php
+|   |   |       artist_profile.blade.php
+|   |   |       artist_rating.blade.php
+|   |   |       artist_request.blade.php
+|   |   |       artist_security.blade.php
+|   |   |       artist_subscription.blade.php
+|   |   |       artist_tattoo.blade.php
+|   |   |       explore.blade.php
+|   |   |       studio_detail.blade.php
+|   |   |       
+|   |   \---studio
+|   |           studio_availability.blade.php
+|   |           studio_chat.blade.php
+|   |           studio_home.blade.php
+|   |           studio_payment.blade.php
+|   |           studio_profile.blade.php
+|   |           studio_promotion.blade.php
+|   |           studio_rating.blade.php
+|   |           studio_request.blade.php
+|   |           studio_search_artist.blade.php
+|   |           studio_security.blade.php
+|   |           studio_subscription.blade.php
+|   |           
+|   +---layouts
+|   |       master.blade.php
+|   |       
+|   +---pages
+|   |   \---client
+|   |           custom_form.blade.php
+|   |           profile.blade copy.php
+|   |           profile.blade.php
+|   |           thank_you.blade.php
+|   |           
+|   \---partials
+|           navbar.blade.php
+|           sidebar.blade.php
+|           
+\---vendor
+    \---breadcrumbs
+            bootstrap5.blade.php
+            

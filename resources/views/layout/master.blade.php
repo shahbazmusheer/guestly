@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html
+    lang="{{ str_replace('_', '-', app()->getLocale()) }}"
+    {!! printHtmlAttributes('html') !!}
+>
+<!--begin::Head-->
+
+<head>
+    <base href="" />
+    <title>{{ config('app.name', 'Laravel') }}</title>
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+    <meta charset="utf-8" />
+    <meta
+        name="description"
+        content=""
+    />
+    <meta
+        name="keywords"
+        content=""
+    />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    />
+    <meta
+        property="og:locale"
+        content="en_US"
+    />
+    <meta
+        property="og:type"
+        content="article"
+    />
+    <meta
+        property="og:title"
+        content=""
+    />
+    <link
+        rel="canonical"
+        href=""
+    />
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-touchspin@4.3.0/dist/jquery.bootstrap-touchspin.min.css"
+    >
+
+    <style>
+        [data-kt-app-layout=dark-sidebar] .app-sidebar {
+            background-color: #ffffff !important;
+            border-right: 0;
+        }
+
+
+        [data-kt-app-layout=dark-sidebar] .app-sidebar .menu>.menu-item .menu-link .menu-title {
+            color: #000000 !important;
+        }
+
+
+        .menu-column {
+            flex-direction: column;
+            width: 100%;
+            /* gap: 1.9rem; */
+        }
+
+        [data-kt-app-layout=dark-sidebar] .app-sidebar .menu>.menu-item .menu-link.active {
+            transition: color 0.2s ease;
+            background-color: #cffbd3 !important;
+            color: var(--bs-primary-inverse);
+        }
+
+        .ki-duotone,
+        .ki-outline,
+        .ki-solid {
+            line-height: 1;
+            font-size: 1rem;
+            color: #014122 !important;
+        }
+
+        .menu-item .menu-link {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            flex: 0 0 100%;
+            padding: 15px 10px 15px 10px !important;
+            transition: none;
+            outline: none !important;
+        }
+
+        div#kt_app_wrapper {
+            background: #f0fdf9;
+        }
+    </style>
+    {!! includeFavicon() !!}
+
+    <!--begin::Fonts-->
+    {!! includeFonts() !!}
+    <!--end::Fonts-->
+
+    <!--begin::Global Stylesheets Bundle(used by all pages)-->
+
+    @foreach (getGlobalAssets('css') as $path)
+        {!! sprintf('<link rel="stylesheet" href="%s">', asset($path)) !!}
+    @endforeach
+    <!--end::Global Stylesheets Bundle-->
+
+    <!--begin::Vendor Stylesheets(used by this page)-->
+    @foreach (getVendors('css') as $path)
+        {!! sprintf('<link rel="stylesheet" href="%s">', asset($path)) !!}
+    @endforeach
+    <!--end::Vendor Stylesheets-->
+
+    <!--begin::Custom Stylesheets(optional)-->
+    @foreach (getCustomCss() as $path)
+        {!! sprintf('<link rel="stylesheet" href="%s">', asset($path)) !!}
+    @endforeach
+    <!--end::Custom Stylesheets-->
+
+    @livewireStyles
+</head>
+<!--end::Head-->
+
+<!--begin::Body-->
+
+<body
+    {!! printHtmlClasses('body') !!}
+    {!! printHtmlAttributes('body') !!}
+>
+
+    @include('partials/theme-mode/_init')
+
+    @yield('content')
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <!--begin::Javascript-->
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    @foreach (getGlobalAssets() as $path)
+        {!! sprintf('<script src="%s"></script>', asset($path)) !!}
+    @endforeach
+    <!--end::Global Javascript Bundle-->
+
+    <!--begin::Vendors Javascript(used by this page)-->
+    @foreach (getVendors('js') as $path)
+        {!! sprintf('<script src="%s"></script>', asset($path)) !!}
+    @endforeach
+    <!--end::Vendors Javascript-->
+
+    <!--begin::Custom Javascript(optional)-->
+    @foreach (getCustomJs() as $path)
+        {!! sprintf('<script src="%s"></script>', asset($path)) !!}
+    @endforeach
+
+    <!--end::Custom Javascript-->
+    @livewireScripts
+    @stack('scripts')
+    <!--end::Javascript-->
+    <script>
+        $('.editor').each(function(e) {
+            CKEDITOR.replace(this.id, {
+                allowedContent: true,
+                toolbar: 'Full',
+                enterMode: CKEDITOR.ENTER_BR,
+                shiftEnterMode: CKEDITOR.ENTER_P,
+            });
+        });
+        document.addEventListener('livewire:load', () => {
+            Livewire.on('success', (message) => {
+                toastr.success(message);
+            });
+            Livewire.on('error', (message) => {
+                toastr.error(message);
+            });
+
+            Livewire.on('swal', (message, icon, confirmButtonText) => {
+                if (typeof icon === 'undefined') {
+                    icon = 'success';
+                }
+                if (typeof confirmButtonText === 'undefined') {
+                    confirmButtonText = 'Ok, got it!';
+                }
+                Swal.fire({
+                    text: message,
+                    icon: icon,
+                    buttonsStyling: false,
+                    confirmButtonText: confirmButtonText,
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        var type = "{{ Session::get('type') }}";
+
+        switch (type) {
+            case 'info':
+                toastr.info("{{ Session::get('message') }}");
+                break;
+
+            case 'warning':
+                toastr.warning("{{ Session::get('message') }}");
+                break;
+
+            case 'success':
+                toastr.success("{{ Session::get('message') }}");
+                break;
+
+            case 'error':
+                toastr.error("{{ Session::get('message') }}");
+                break;
+
+        }
+    </script>
+
+
+</body>
+<!--end::Body-->
+
+</html>

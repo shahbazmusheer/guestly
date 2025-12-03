@@ -1,0 +1,110 @@
+<?php
+namespace App\Repositories\API;
+
+use App\Models\User;
+use App\Repositories\API\UserRepositoryInterface;
+use Hash;
+
+class UserRepository implements UserRepositoryInterface
+{
+    public function createUser(array $data)
+    {
+        $user = User::create($data);
+        $user->assignRole($data['user_type']); // roles should be 'artist' or 'studio'
+        return $user;
+    }
+
+    public function findByEmail(string $email)
+    {
+        return User::withoutGlobalScope('active')->where('email', $email)->with(['activeSubscription.plan'])->first();
+    }
+
+    public function updateOtp(string $email, int $otp)
+    {
+        return User::where('email', $email)->update(['otp' => $otp]);
+    }
+    public function createOrUpdateSocialUser(array $data)
+    {
+        $user = $this->findByEmail($data['email']);
+        $providerField = $data['provider_field'];
+        $data[$providerField] = $data['social_id'];
+
+        unset($data['social_id']);
+        unset($data['provider_field']);
+
+        if ($user) {
+            $user->update($data);
+            return $user;
+        }
+        $user = User::create($data);
+
+        $user->assignRole($data['user_type']); // roles should be 'artist' or 'studio'
+
+        return $user;
+
+
+
+    }
+
+    public function updateVerificationImages(User $user, array $paths, string $type)
+    {
+        $user->verification_type = $type;
+
+        if (isset($paths['front'])) {
+            $user->document_front = $paths['front'];
+        }
+
+        if (isset($paths['back'])) {
+            $user->document_back = $paths['back'];
+        }
+
+        $user->verification_status = '0';
+
+        $user->save();
+
+        return $user;
+    }
+
+
+    public function confirmVerification(User $user)
+    {
+        $user->verification_status = '1';
+        $user->save();
+
+        return $user;
+    }
+
+    public function getVerificationStatus(User $user)
+    {
+
+        return [
+            'status' => $user->verification_status,
+            'type' => $user->verification_type,
+            'front' => $user->document_front,
+            'back' => $user->document_back,
+        ];
+    }
+
+    public function verifyCode(string $email, int $code)
+    {
+        $reset = User::where('email', $email)
+            ->where('otp', $code)
+            ->first();
+
+        if (!$reset) {
+            return false;
+        }
+
+
+
+        return true;
+    }
+
+    public function updatePassword(string $email, string $password)
+    {
+        return User::where('email', $email)
+            ->update(['password' => Hash::make($password),
+            'otp' => null]);
+    }
+
+}

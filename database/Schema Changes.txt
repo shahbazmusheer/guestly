@@ -1,0 +1,4 @@
+1. Added 'guest_policy_text' into users table.
+
+---------------
+Pending Tasks: Studio Step Form mn commission value according to figma rkhna hy

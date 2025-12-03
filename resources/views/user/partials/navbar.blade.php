@@ -1,0 +1,139 @@
+<div class="page-header">
+    <div class="header-row">
+        <h1 class="page-title">{{ $pageTitle ?? '' }}</h1>
+        <div class="user-profile">
+
+        <!-- Language Selector Start -->
+<div class="language-selector">
+    <div class="selected-language" id="selectedLanguage">
+        @if(session('locale') === 'ko')
+            <img src="https://flagcdn.com/kr.svg" alt="Korean (South Korea)">
+            <span>한국어</span>
+        @else
+            <img src="https://flagcdn.com/gb.svg" alt="English">
+            <span>English</span>
+        @endif
+        <i class="arrow-down"></i>
+    </div>
+    <ul class="language-dropdown" id="languageDropdown">
+        <li>
+            <label>
+                <input type="radio" name="language" value="en"
+                       {{ session('locale') === 'en' ? 'checked' : '' }}>
+                <img src="https://flagcdn.com/gb.svg" alt="English">
+                English
+            </label>
+        </li>
+        <li>
+            <label>
+                <input type="radio" name="language" value="ko"
+                       {{ session('locale') === 'ko' ? 'checked' : '' }}>
+                <img src="https://flagcdn.com/kr.svg" alt="Korean (South Korea)">
+                한국어
+            </label>
+        </li>
+    </ul>
+</div>
+<!-- Language Selector End -->
+
+            <!-- Profile Dropdown Area (Pehle se maujood) -->
+            <div class="profile-toggle-area" id="profileToggleArea">
+{{--                <img src="{{ asset('assets/web/dashboard/user-profile.jpg') }}" alt="Chris Johnson avatar" class="user-avatar">--}}
+                @if (Auth::check() && (Auth::user()->avatar || Auth::user()->studio_logo))
+                    @if(Auth::user()->role_id == 'studio')
+                        <img src="{{ asset(Auth::user()->studio_logo) }}"
+                             alt="{{ Auth::user()->studio_name }} avatar"
+                             class="user-avatar">
+                    @else
+                        <img src="{{ asset(Auth::user()->avatar) }}"
+                             alt="{{ Auth::user()->name }} avatar"
+                             class="user-avatar">
+                    @endif
+                @else
+                    <img src="{{ asset('avatar/001-boy.svg') }}"
+                         alt="Default avatar"
+                         class="user-avatar">
+                @endif
+
+                <div class="user-info">
+                    <p>{{ Auth::user()->role_id == 'studio' ? ucwords(Auth::user()->studio_name) : ucwords(Auth::user()->name.' '.Auth::user()->last_name) }}</p>
+                    <p>{{ ucwords(Auth::user()->role_id) }}</p>
+                </div>
+            </div>
+            <div class="profile-dropdown-menu" id="profileDropdownMenu">
+                <a class="profile-dropdown-item" href="{{ Auth::user()->role_id == 'studio' ? route('dashboard.studio_profile') :route('dashboard.artist_profile') }}">Profile</a>
+
+                <a href="#" class="profile-dropdown-item"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </div>
+
+            <!-- Notification Bell aur Dropdown -->
+            <div class="notification-container">
+                <div class="notification-bell-icon" id="notificationBellIcon">
+                    <img src="{{ asset('assets/web/extra/notification_logo.png') }}" alt="Notification Bell">
+                    <!-- Aap yahan SVG icon bhi istemal kar sakte hain -->
+                </div>
+
+                <!-- Notification Dropdown Menu -->
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-header">
+                        <h3>Notifications</h3>
+                    </div>
+                    <div class="notification-list">
+                        <!-- Notification Item 1 -->
+                        <div class="notification-item">
+                            <div class="item-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="item-content">
+                                <p class="item-title"><strong>John Doe</strong></p>
+                                <p class="item-message">It is a long established fact that a reader will be distracted
+                                </p>
+                            </div>
+                            <div class="item-meta">
+                                <span class="unread-dot"></span>
+                                <span class="item-time">00 min ago</span>
+                            </div>
+                        </div>
+                        <!-- Notification Item 2 -->
+                        <div class="notification-item">
+                            <div class="item-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="item-content">
+                                <p class="item-title"><strong>John Doe</strong></p>
+                                <p class="item-message">It is a long established fact that a reader will be distracted
+                                </p>
+                            </div>
+                            <div class="item-meta">
+                                <span class="unread-dot"></span>
+                                <span class="item-time">00 min ago</span>
+                            </div>
+                        </div>
+                        <!-- Notification Item 3 (Same as above) -->
+                    </div>
+                    <div class="notification-footer">
+                        <a href="{{ route('dashboard.notification') }}">View All</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

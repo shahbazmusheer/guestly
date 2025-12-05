@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Web\Artist;
 
 use App\Http\Controllers\Controller;
+use App\Models\StationAmenity;
+use App\Models\Supply;
+use App\Models\TattooStyle;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +23,7 @@ class ArtistController extends Controller
         // 1. Get Artist's Location (use default if not set)
         $lat = $artist->latitude ?? 40.7128; // Default to NYC for example
         $lng = $artist->longitude ?? -74.0060; // Default to NYC for example
-        $maxDistance = 5; // Max distance in kilometers (adjust as needed)
+        $maxDistance = 1000; // Max distance in kilometers (adjust as needed)
 
         // 2. Haversine Formula for Distance Calculation (in Kilometers)
         $haversine = "(6371 * acos(
@@ -50,10 +53,21 @@ class ArtistController extends Controller
         ]);
     }
 
-    public function studioDetail()
+    public function studioDetail(int $studio_id)
     {
+        $studio = User::find($studio_id);
+        $studio->load([
+            'studioImages',
+            'stationAmenitiesProvided',
+            'supplies',
+            'designSpecialties'
+        ]);
+        $studio->stationAmenityIds = $studio->stationAmenitiesProvided->pluck('id')->toArray();
+
         return view('user.dashboard.artist.studio_detail', [
-            'pageTitle' => __('explore_heading')
+            'pageTitle' => $studio->studio_name,
+            'studio' => $studio
+
         ]);
     }
 
@@ -136,19 +150,29 @@ class ArtistController extends Controller
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        if($request->name && str_contains($request->name,' ')){
+            $fullname = explode(' ', $request->name);
+            $request['name'] = ucwords($fullname[0]);
+            $request['last_name'] = ucfirst($fullname[1]);
+        }
+
         // Avatar upload using your preferred method
         if ($request->hasFile('avatar')) {
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar);
+            if ($user->avatar && file_exists($user->avatar)) {
+                unlink($user->avatar);
             }
 
-            $path = $request->file('avatar')->store('artists/avatar', 'public');
-            $validated['avatar'] = $path;
+            $dir = 'artists/avatar';
+
+            $path = 'artist-avatar-'.time().'.'.$request->file('avatar')->getClientOriginalExtension();
+            $request->file('avatar')->move(public_path($dir), $path);
+            $validated['avatar'] = $dir.'/'.$path;
         }
 
         // Update user data
         $user->update([
-            'name' => $validated['name'] ?? $user->name,
+            'name' => $request['name'] ?? $user->name,
+            'last_name' => $request['last_name'] ?? $user->last_name,
             'country' => $validated['country'] ?? $user->country,
             'address' => $validated['address'] ?? $user->address,
             'phone' => $validated['phone'] ?? $user->phone,
@@ -169,8 +193,40 @@ class ArtistController extends Controller
 
     public function bio()
     {
+        $artist = Auth::user();
+        $artist->load([
+            'tattooStyles'
+        ]);
+        $artist['tattooStyleIds'] = $artist->tattooStyles->pluck('id')->toArray();
+        $tattoo_styles = TattooStyle::where('status', 1)->get();
         return view('user.dashboard.artist.artist_bio', [
-            'pageTitle' => __('profile_heading')
+            'pageTitle' => __('profile_heading'),
+            'artist' => $artist,
+            'tattoo_styles' => $tattoo_styles,
+        ]);
+    }
+
+    public function saveBio(Request $request)
+    {
+        $artist = Auth::user();
+        $validatedData = $request->validate([
+            'bio' => 'nullable|string',
+            'tattoo_styles' => 'nullable|array',
+        ]);
+
+        $artist->bio = $validatedData['bio'] ?? $artist->bio;
+        $artist->tattooStyles()->sync($validatedData['tattoo_styles'] ?? []);
+        $artist->save();
+
+        $artist->load([
+            'tattooStyles'
+        ]);
+        $artist['tattooStyleIds'] = $artist->tattooStyles->pluck('id')->toArray();
+        $tattoo_styles = TattooStyle::where('status', 1)->get();
+        return redirect()->to(route('dashboard.artist_bio'))->with([
+            'pageTitle' => __('profile_heading'),
+            'artist' => $artist,
+            'tattoo_styles' => $tattoo_styles,
         ]);
     }
 

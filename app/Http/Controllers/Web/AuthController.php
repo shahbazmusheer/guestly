@@ -28,8 +28,6 @@ class AuthController extends Controller
 
         // 3. Reverse Geocode the location
         $location = $this->reverseGeocode($request->latitude, $request->longitude);
-
-        dd($location);
         $user = User::create([
             'name' => $request->first_name,
             'last_name' => $request->last_name,

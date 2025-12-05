@@ -25,11 +25,11 @@
             <div class="col-md-6">
                 <!-- Left: Studio Cards -->
                 <div class="cards_container">
-                    <div class="row">
+                    <div class="row pt-2">
                         @forelse ($studios as $studio)
                             <div class="col-xxl-6 col-xl-12 col-lg-12">
                                 <!-- Studio Card -->
-                                <div class="studio-card" data-studio-id="{{ $studio->id }}" data-lat="{{ $studio->latitude }}" data-lng="{{ $studio->longitude }}">
+                                <div class="studio-card" onclick="window.location.href='{{ route('dashboard.studio_detail', ['id' => $studio->id]) }}'" data-studio-id="{{ $studio->id }}" data-lat="{{ $studio->latitude }}" data-lng="{{ $studio->longitude }}">
                                     <div class="card_image_wrapper">
                                         <div class="swiper swiper_slider">
                                             <div class="swiper-wrapper">
@@ -40,25 +40,25 @@
                                                     </div>
                                                 @empty
                                                     <div class="swiper-slide">
-                                                        <img src="{{ asset('assets/web/dashboard/placeholder.jpg') }}" alt="Placeholder" class="">
+                                                        <img src="{{ asset('studios/covers/default-cover.png') }}" alt="Placeholder" class="">
                                                     </div>
                                                 @endforelse
                                             </div>
                                             <div class="swiper-pagination"></div>
                                         </div>
                                     </div>
-                                    <div class="card_content_wrapper" onclick="window.location.href='{{ route('dashboard.studio_detail', ['id' => $studio->id]) }}'">
+                                    <div class="card_content_wrapper">
                                         <div class="card-header">
                                             <div class="card-logo-wrapper">
                                                 {{-- Use asset() with the logo path --}}
-                                                <img src="{{ $studio->studio_logo ? asset($studio->studio_logo) : asset('assets/web/dashboard/default_1.png') }}"
+                                                <img src="{{ $studio->studio_logo ? asset($studio->studio_logo) : asset('studios/logos/default-logo.png') }}"
                                                      alt="{{ $studio->studio_name ?? $studio->name . ' ' . $studio->last_name }} Logo" class="card-logo">
                                             </div>
                                             <div class="card_location_wrapper">
-                                                <p>{{ $studio->studio_name ?? $studio->name }}</p>
+                                                <p title="{{($studio->studio_name ?? $studio->name)}}">{{ Str::limit(($studio->studio_name ?? $studio->name), 12, '...') }}</p>
                                                 <img src="{{ asset('assets/web/extra/location_logo.png') }}" alt="Location"
                                                      style="width: 16px; height: 16px; vertical-align: middle;">
-                                                <span>{{ $studio->city ?? 'City N/A' }}, {{ $studio->country ?? 'Country N/A' }}</span>
+                                                <span title="{{($studio->city ?? '' ). (($studio->city && $studio->country) ? ', ' : '') . ($studio->country ? strtoupper($studio->country) : '')}}">{{ Str::limit(($studio->city ?? '' ). (($studio->city && $studio->country) ? ', ' : '') . ($studio->country ? strtoupper($studio->country) : ''), 12, '...') }}</span>
                                             </div>
                                             <button class="card-like-btn">
                                                 <svg fill="currentColor" viewBox="0 0 20 20">
@@ -83,10 +83,10 @@
                                             <div class="card-details">
                                                 <div class="timings_detail">
                                                     {{-- Note: Studio Hours are not in your provided User table, placeholder used --}}
-                                                    <span>Open Today: 12:00 PM - 10:00 PM</span>
+                                                    <span style="font-size: 13px">Open Today: 12:00 PM - 10:00 PM</span>
                                                 </div>
                                                 <div class="specialities_wrapper">
-                                                    <span>{{ round($studio->distance, 1) }} km away</span>
+                                                    <span style="font-size: 13px">{{ round($studio->distance, 1) }} KM away</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -264,42 +264,7 @@
         </script>
 
         <script>
-            const studios = [
-                {
-                    name: 'The Inkwell Studio',
-                    location: 'San Diego, CA',
-                    lat: 40.7650,
-                    lng: -73.9995,
-                    logo: "{{ asset('assets/web/dashboard/default_1.png') }}",
-                    coverImage: "{{ asset('assets/web/dashboard/default_1_profile.jpg') }}",
-                    hours: '12:00 PM – 10:00 PM',
-                    specialties: 'Realism & Illustrative',
-                    isOpen: true
-                },
-                {
-                    name: 'Electric Tiger Tattoo',
-                    location: 'Manhattan, NY',
-                    lat: 40.7831,
-                    lng: -73.9712,
-                    logo: "{{ asset('assets/web/dashboard/default_3.png') }}",
-                    coverImage: "{{ asset('assets/web/dashboard/default_3_profile.jpg') }}",
-                    hours: '11:00 AM – 9:00 PM',
-                    specialties: 'Neo-Traditional',
-                    isOpen: false
-                },
-                {
-                    name: 'Crimson Lotus Tattoo',
-                    location: 'Brooklyn, NY',
-                    lat: 40.6782,
-                    lng: -73.9442,
-                    logo: "{{ asset('assets/web/dashboard/default_2.png') }}",
-                    coverImage: "{{ asset('assets/web/dashboard/default_2_profile.jpg') }}",
-                    hours: '10:00 AM – 8:00 PM',
-                    specialties: 'Tattoo & Piercing',
-                    isOpen: true
-                }
-            ];
-
+            const asset_path = @json(asset(''));
             // Data passed from Laravel Controller to JavaScript
             const studiosData = @json($studios);
             const artistLat = {{ $artist->latitude ?? '40.7128' }};
@@ -323,7 +288,7 @@
                         this.div.className = "custom-marker";
                         // Adjusted innerHTML to use asset paths correctly
                         this.div.innerHTML =
-                            `<div class="marker-label">${this.studio.studio_name}</div><div class="marker-pin"><svg width="48" height="56" viewBox="0 0 60 70"><defs><filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/></filter></defs><path d="M30 70C30 70 5 45 5 25C5 12.8 16.2 2 30 2C43.8 2 55 12.8 55 25C55 45 30 70 30 70Z" fill="white" filter="url(#shadow)"/><circle cx="30" cy="25" r="22" fill="none" stroke="#d1d5db" stroke-width="4" class="marker-border"/><image href="../${this.studio.studio_logo}" x="8" y="3" height="44" width="44" clip-path="url(#circleClip${this.studio.lat})" /><clipPath id="circleClip${this.studio.lat}"><circle cx="30" cy="25" r="22"/></clipPath></svg></div>`;
+                            `<div class="marker-label">${this.studio.studio_name}</div><div class="marker-pin"><svg width="48" height="56" viewBox="0 0 60 70"><defs><filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/></filter></defs><path d="M30 70C30 70 5 45 5 25C5 12.8 16.2 2 30 2C43.8 2 55 12.8 55 25C55 45 30 70 30 70Z" fill="white" filter="url(#shadow)"/><circle cx="30" cy="25" r="22" fill="none" stroke="#d1d5db" stroke-width="4" class="marker-border"/><image href="${asset_path+(this.studio.studio_logo || 'studios/logos/default-logo.png')}" x="8" y="3" height="44" width="44" clip-path="url(#circleClip${this.studio.lat})" /><clipPath id="circleClip${this.studio.lat}"><circle cx="30" cy="25" r="22"/></clipPath></svg></div>`;
                         this.addListeners();
                         const panes = this.getPanes();
                         panes.overlayMouseTarget.appendChild(this.div);
@@ -421,50 +386,10 @@
                 }
             }
 
-            // This function injects the studio details into the right-side map panel
-            function showStudioDetailsOld(studio) {
-                if (!panelWrapper) return;
-
-                currentOpenPanelStudio = studio;
-
-                // 1. Image Carousel HTML (using the first available image as the main one)
-                const mainImageUrl = studio.studio_cover ? '{{ asset('') }}'+studio.studio_cover :
-                        '{{ asset('assets/web/dashboard/placeholder.jpg') }}';
-
-                const imageHtml = `<img src="${mainImageUrl}" alt="${studio.studio_name} cover image" class="card-image">`;
-
-
-                // 3. Status Badge
-                const isOpen = true; // Assuming a general open status for example
-                const statusClass = isOpen ? 'open' : 'closed';
-                const statusText = isOpen ? 'OPEN' : 'CLOSED';
-
-                // 4. Inject all content
-                panelWrapper.querySelector('#image-container').innerHTML = imageHtml;
-                panelWrapper.querySelector('#studio-logo').src = studio.studio_logo ? '{{ asset('') }}' + studio.studio_logo : '{{ asset('assets/web/dashboard/default_1.png') }}';
-                panelWrapper.querySelector('#studio-name').textContent = studio.studio_name || studio.name;
-                panelWrapper.querySelector('#studio-location').innerHTML = `
-                <img src="{{ asset('assets/web/extra/location_logo.png') }}" alt="Location">
-                <span>${studio.city || 'N/A'}, ${studio.country || 'N/A'}</span>`;
-                panelWrapper.querySelector('#status-badge').className = `card-status-badge ${statusClass}`;
-                panelWrapper.querySelector('#status-badge').textContent = statusText;
-                panelWrapper.querySelector('#studio-details').innerHTML = `
-                <div class="timings_detail">
-                    <strong>Hours:</strong> <span>12:00 PM – 10:00 PM</span>
-                </div>
-                <div class="specialities_wrapper">
-                    <strong>Distance:</strong> <span>${Math.round(studio.distance)} km away</span>
-                </div>
-            `;
-
-                panelWrapper.classList.add('active');
-            }
-
-
             function showStudioDetails(studio) {
                 // Is function mein koi badlaav nahi
                 panelWrapper.innerHTML = `
-            <div class="studio-card">
+            <div class="studio-card"  onclick="window.location.href='${'studios/'+studio.id}'">
                 <div class="card-image-wrapper">
                     <button id="close-btn" class="modal-close-btn">×</button>
                     <img src="../${studio.studio_cover}" alt="${studio.studio_name} cover image" class="card-image">
@@ -479,7 +404,7 @@
                             <h3 class="card-title">${studio.studio_name}</h3>
                             <div class="card-location">
                                 <img src="{{ asset('assets/web/extra/location_logo.png') }}" alt="Location">
-                                <span>${studio.city || 'N/A'}, ${studio.country.toUpperCase() || 'N/A'}</span>
+                                <span>${studio.city ? studio.city+', ' : ''}${studio.country.toUpperCase() || 'N/A'}</span>
                             </div>
                         </div>
                         </div>

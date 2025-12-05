@@ -80,11 +80,12 @@ Route::get('/', function () {
      // -- Artist Dashboard Routes
      Route::middleware('role:artist')->prefix('dashboard')->name('dashboard.')->group(function () {
          Route::get('/explore', [WebArtistController::class, 'explore'])->name('explore');
-         Route::get('/studio_detail', [WebArtistController::class, 'studioDetail'])->name('studio_detail');
+         Route::get('/studios/{id}', [WebArtistController::class, 'studioDetail'])->name('studio_detail');
          Route::get('/artist_chat', [WebArtistController::class, 'chat'])->name('artist_chat');
          Route::get('/artist_profile', [WebArtistController::class, 'profile'])->name('artist_profile');
          Route::get('/artist_security', [WebArtistController::class, 'security'])->name('artist_security');
          Route::get('/artist_bio', [WebArtistController::class, 'bio'])->name('artist_bio');
+         Route::post('/artist_bio', [WebArtistController::class, 'saveBio'])->name('save_artist_bio');
          Route::get('/artist_subscription', [WebArtistController::class, 'subscription'])->name('artist_subscription');
          Route::get('/artist_rating', [WebArtistController::class, 'rating'])->name('artist_rating');
          Route::get('/artist_payment', [WebArtistController::class, 'payment'])->name('artist_payment');
@@ -102,7 +103,7 @@ Route::get('/', function () {
          Route::get('/studio_chat', [WebStudioController::class, 'chat'])->name('studio_chat');
 //         Route::get('/artist_chat', [WebStudioController::class, 'chat'])->name('artist_chat');
 
-         Route::get('/studio_search_artist', [WebStudioController::class, 'searchArtist'])->name('studio_search_artist');
+         Route::get('/guest_artists', [WebStudioController::class, 'guestArtists'])->name('guest_artists');
          Route::get('/studio_request', [WebStudioController::class, 'studioRequest'])->name('studio_request');
          Route::get('/studio_profile', [WebStudioController::class, 'profile'])->name('studio_profile');
          Route::post('update_studio_profile', [WebStudioController::class, 'updateStudioProfile'])->name('update_studio_profile');

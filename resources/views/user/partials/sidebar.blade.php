@@ -123,7 +123,7 @@
                     <span>{{__('messages_heading')}}</span>
                 </a>
 
-                <a href="{{ url ('dashboard/studio_search_artist') }}"
+                <a href="{{ route('dashboard.guest_artists') }}"
                    class="nav-link {{ Request::is('dashboard/studio_search_artist') || Request::is('dashboard/artist_guest_spot') ? 'active' : '' }}">
                     <img src="{{ asset(Request::is('dashboard/studio_search_artist') || Request::is('dashboard/artist_guest_spot') ? 'assets/web/extra/studio_search.svg' : 'assets/web/extra/studio_search_inactive.svg') }}"
                          style="width: 20px; height: 20px;">

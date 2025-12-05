@@ -225,7 +225,7 @@
                     @endif
 
                         <img id="profilePreview"
-                             src="{{ ($user->avatar && !str_contains($user->avatar, 'avatar/001-boy.svg')) ? asset('storage/' . $user->avatar) : asset('avatar/001-boy.svg') }}"
+                             src="{{ ($user->avatar && !str_contains($user->avatar, 'avatar/001-boy.svg')) ? asset($user->avatar) : asset('avatar/001-boy.svg') }}"
                              alt="Profile Picture"
                              class="profile-picture"
                              style="{{ ($user->avatar && !str_contains($user->avatar, 'avatar/001-boy.svg')) ? '' : 'background-color: transparent;' }}">
@@ -237,7 +237,7 @@
 
                 </div>
 
-                <h2 class="profile-name">{{ ucfirst($user->name) }}</h2>
+                <h2 class="profile-name">{{ ucfirst($user->name) }} {{ ucfirst($user->last_name) }}</h2>
                 <p class="profile-role">{{ ucfirst($user->user_type) }}</p>
             </div>
             @if (session('success'))
@@ -277,8 +277,8 @@
                     <div class="info-field">
                         <div class="field-data">
                             <label class="field-label">Legal Name</label>
-                            <span class="value">{{ $user->name }}</span>
-                            <input type="text" name="name" class="editable-input" value="{{ old('name', $user->name) }}" style="display: none;">
+                            <span class="value">{{ $user->name }} {{ $user->last_name }}</span>
+                            <input type="text" name="name" class="editable-input" value="{{ old('name', $user->name . ' ' . $user->last_name) }}" style="display: none;">
                         </div>
                         <button type="button" class="action-btn toggle-edit-btn" data-original-text="Edit">Edit</button>
                     </div>

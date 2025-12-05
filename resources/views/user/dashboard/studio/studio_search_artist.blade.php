@@ -1,7 +1,7 @@
 @extends('user.layouts.master')
 
 {{-- @push('styles') --}}
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<link rel="stylesheet" href="https//unpkg.com/swiper/swiper-bundle.min.css" />
 
 <style>
     :root {
@@ -15,6 +15,11 @@
         --text-dark: #1f2937;
         --text-light: #6b7280;
         --verified-green: #014122;
+        --card-header-bg: #E6F4F0;
+        --dark-green: #004D40;
+        --text-color: #333;
+        --label-color: #868e96;
+        --card-bg: #ffffff;
     }
 
     body {
@@ -186,7 +191,7 @@
     }
 
     .artist-details p {
-        font-size: 13px;
+        font-size: 12px;
         color: var(--text-light);
         margin: 2px 0 0 0;
     }
@@ -227,7 +232,7 @@
     }
 
     .artist-tags {
-        display: flex;
+        display: inline-table;
         flex-wrap: wrap;
         gap: 8px;
         margin-bottom: 12px;
@@ -257,6 +262,93 @@
         margin: 0;
     }
 
+    /* --- MODAL STYLES (UPDATED) --- */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(94, 128, 130, 0.3);
+        /* Semi-transparent background */
+        display: none;
+        /* Hidden by default */
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background-color: var(--card-bg);
+        padding: 40px;
+        /* Increased padding for better spacing */
+        border-radius: 24px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 600px;
+        width: 90%;
+    }
+
+    .success-icon {
+        width: 120px;
+        /* <<< YAHAN IMAGE SIZE INCREASE KI HAI */
+        height: auto;
+        margin: auto;
+        /*margin-bottom: -100px;*/
+        /* Adjusted margin for better spacing */
+        /*margin-top: -90px;*/
+    }
+
+    .modal-content h2 {
+        font-family: 'Arial Rounded MT Bold', sans-serif;
+        font-size: 24px;
+        font-weight: 500;
+        color: #014122;
+        margin: 0 0 15px;
+    }
+
+    .modal-content p {
+        font-size: 16px;
+        font-family: 'Actor', sans-serif;
+        color: #333333;
+        line-height: 1.2;
+        margin: 0 auto 30px auto;
+        max-width: 90%;
+
+    }
+
+    .modal-continue-btn {
+        width: 100%;
+        background-color: #014122;
+        color: white;
+        border: none;
+        padding: 15px;
+        border-radius: 50px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: 'Arial Rounded MT Bold', sans-serif;
+        transition: background-color 0.2s;
+        margin-left: -8px;
+        margin-top: -15px;
+    }
+
+    .modal-continue-btn:hover {
+        background-color: #083120;
+        /* A slightly darker green for hover */
+    }
+
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+        display: flex;
+    }
+
+    .modal-overlay.active .modal-content {
+        transform: scale(1);
+    }
+
+
     /* Responsive */
     @media (max-width: 1200px) {
         .spots-grid {
@@ -285,6 +377,203 @@
         }
     }
 </style>
+<style>
+    .profile-page-wrapper {
+        background-color: var(--light-green-bg);
+        padding: 40px 20px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        font-family: 'Inter', sans-serif;
+    }
+    .profile-card-container {
+        background-color: #fff;
+        border-radius: 24px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+        width: 100%;
+        max-width: 600px;
+        padding: 24px;
+        box-sizing: border-box;
+    }
+    .profile-header {
+        background-color: var(--card-bg);
+        border-radius: 16px;
+        padding: 24px;
+        text-align: center;
+        margin-bottom: 24px;
+    }
+    /*.profile-picture {*/
+    /*    width: 90px;*/
+    /*    height: 90px;*/
+    /*    border-radius: 50%;*/
+    /*    object-fit: cover;*/
+    /*    margin-bottom: 12px;*/
+    /*}*/
+    .profile-name {
+        font-size: 22px;
+        font-weight: 600;
+        color: #014122;
+        margin: 0;
+    }
+    .profile-role {
+        font-size: 14px;
+        color: #555;
+        margin: 4px 0 0;
+    }
+    .verification-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #5E8082;
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+    }
+    .verification-section h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--dark-green);
+    }
+    .verified-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--dark-green);
+        font-weight: 600;
+        font-size: 16px;
+    }
+    .verified-status svg {
+        width: 20px;
+        height: 20px;
+        fill: var(--dark-green);
+    }
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .info-field-full {
+        grid-column: 1 / -1;
+    }
+    .info-field {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #5E8082;
+        border-radius: 12px;
+        padding: 8px 16px;
+    }
+    .field-data {
+        flex-grow: 1;
+    }
+    .field-label {
+        display: block;
+        font-size: 12px;
+        color: #5E8082;
+        margin-bottom: 2px;
+    }
+    .value {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text-color);
+    }
+    .editable-input {
+        display: block;
+        width: 100%;
+        border: none;
+        background-color: transparent;
+        padding: 0;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text-color);
+    }
+    .editable-input:focus {
+        outline: none;
+        box-shadow: none;
+    }
+    .action-btn {
+        background: none;
+        border: none;
+        color: #014122;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        padding: 0 0 0 10px;
+        text-decoration: underline;
+    }
+    .save-changes-container {
+        text-align: center;
+        margin-top: 32px;
+    }
+    .save-changes-btn {
+        background-color: #014122;
+        color: #fff;
+        border: none;
+        padding: 18px 40px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .profile-picture-container {
+        position: relative;
+        display: inline-block;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background-color: #f0f2f5;
+        border: 2px solid var(--card-header-bg);
+    }
+
+    .profile-placeholder-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 30px;
+        color: #aab0b9;
+        z-index: 1;
+    }
+
+    .profile-picture {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+        position: relative;
+        z-index: 2;
+    }
+
+    .profile-picture-container .upload-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: rgba(1, 65, 34, 0.7);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 3;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .profile-picture-container:hover .upload-overlay {
+        opacity: 1;
+    }
+    @media (max-width: 640px) {
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 {{-- @endpush --}}
 
 
@@ -303,7 +592,7 @@
                 </div>
                 <button class="filter-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="4" y1="21" x2="4" y2="14"></line>
                         <line x1="4" y1="10" x2="4" y2="3"></line>
                         <line x1="12" y1="21" x2="12" y2="12"></line>
@@ -316,27 +605,27 @@
                     </svg>
                     <span>Filter</span>
                     <svg class="dropdown-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
+                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round"></path>
+                              stroke-linejoin="round"></path>
                     </svg>
                 </button>
             </div>
         </div>
 
         <div class="spots-grid">
-            @for ($i = 0; $i < 8; $i++)
-                <div class="artist-card">
+            @foreach ($artists as $artist)
+                <div class="artist-card" onclick='loadProfileModal(@json($artist))'>
                     <div class="card_image_wrapper">
                         <div class="swiper swiper_slider">
                             <div class="swiper-wrapper">
                                 {{-- Backend se aane wale dynamic images yahan loop honge --}}
                                 <div class="swiper-slide"><img src="{{ asset('assets/web/dashboard/default_1_profile.jpg') }}"
-                                        alt="Artwork"></div>
+                                                               alt="Artwork"></div>
                                 <div class="swiper-slide"><img src="{{ asset('assets/web/dashboard/default_2_profile.jpg') }}"
-                                        alt="Artwork"></div>
+                                                               alt="Artwork"></div>
                                 <div class="swiper-slide"><img src="{{ asset('assets/web/dashboard/default_3_profile.jpg') }}"
-                                        alt="Artwork"></div>
+                                                               alt="Artwork"></div>
                             </div>
                             <div class="swiper-pagination"></div>
                         </div>
@@ -345,15 +634,15 @@
                     <div class="card_content_wrapper">
                         <div class="artist-header">
                             {{-- Backend se aane wali profile pic yahan lagegi --}}
-                            <img src="{{ asset('assets/web/dashboard/default_1.png') }}" alt="Artist Name" class="artist-profile-pic">
+                            <img src="{{ $artist->avatar ? asset($artist->avatar) : asset('artists/avatar/default-avatar.png') }}" alt="Artist Name" class="artist-profile-pic">
                             <div class="artist-details">
                                 {{-- Backend se aane wala naam aur experience yahan aayega --}}
-                                <h3>Chris Johnson</h3>
+                                <h3 title="{{($artist->name. ' ' .$artist->last_name)}}">{{Str::limit(($artist->name. ' ' .$artist->last_name), 12, '...')}}</h3>
                                 <p>4+ Years of Experience</p>
                             </div>
-                            <div class="message-icon">
+                            <div class="message-icon" onclick="window.location.href='{{route('dashboard.studio_chat')}}'">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="#014122"
-                                    xmlns="http://www.w3.org/2000/svg">
+                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z">
                                     </path>
@@ -372,24 +661,30 @@
                             </span>
                             <span>&bull;</span>
                             {{-- Backend se aane wali location yahan aayegi --}}
-                            <span>San Diego, California, USA</span>
+                            <span>{{$artist->address ?? ( ($artist->city).(($artist->city && $artist->country) ? ', ' : ''). $artist->country)}}</span>
                         </div>
 
-                        <div class="artist-tags">
-                            {{-- Backend se aane wale tags yahan loop honge --}}
-                            <span class="tag realism">Realism & Illustrative</span>
-                            <span class="tag bold">Bold & Graphic</span>
-                        </div>
+
+                        @foreach($artist->tattooStyles as $style)
+                            <div class="artist-tags">
+                                <span class="tag realism">{{$style->name}}</span>
+                            </div>
+                        @endforeach
 
                         <p class="artist-bio">
-                            {{-- Backend se aane wala bio yahan aayega --}}
-                            I'm a passionate tattoo artist known for bold linework, fine detail, and custom designs that
-                            tell a story. With over 6 years of experience, Riley specializes in neo-traditional, blockwork,
-                            and botanical-inspired pieces.
+                            {{$artist->bio ?? 'Bio not added yet...'}}
                         </p>
                     </div>
                 </div>
-            @endfor
+            @endforeach
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="profile-modal">
+        <div class="modal-content">
+            <div class="profile-card-container">
+            </div>
         </div>
     </div>
 @endsection
@@ -420,5 +715,72 @@
                 });
             }
         });
+
+        function loadProfileModal(artist) {
+            const asset_path = @json(asset(''));
+            const profileModal = document.getElementById('profile-modal');
+            const modalContent = profileModal.querySelector('.modal-content')
+            var htmlContent = `
+                <div class="profile-header">
+                    <!-- Profile Image Upload (Updated Structure) -->
+                    <div class="profile-picture-container">
+                <img id="profilePreview"
+                     src="${(artist.avatar && (artist.avatar.includes('avatar/001-boy.svg'))) ? asset_path+artist.avatar : asset_path+'avatar/001-boy.svg' }"
+                             alt="Profile Picture"
+                             class="profile-picture"
+                             style="${ (artist.avatar && (artist.avatar.includes('avatar/001-boy.svg'))) ? '' : 'background-color: transparent;' }">
+
+
+                        <label for="avatarInput" class="upload-overlay">
+                            <i class="fa fa-camera"></i>
+                        </label>
+
+                    </div>
+
+                    <h2 class="profile-name">${ artist.name + ' ' + artist.last_name }</h2>
+                    <p class="profile-role">${ artist.user_type }</p>
+                     <form method="POST" action="{{ route('dashboard.artist_profile_update') }} " enctype="multipart/form-data">
+                @csrf
+            <input type="file" id="avatarInput" name="avatar" accept="image/*" style="display: none;">
+
+            <div class="verification-section">
+                <h3>Identification Verification</h3>
+                <span class="verified-status">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.9502 12.7L9.5002 11.275C9.31686 11.0917 9.08786 11 8.8132 11C8.53853 11 8.30086 11.1 8.1002 11.3C7.91686 11.4834 7.8252 11.7167 7.8252 12C7.8252 12.2834 7.91686 12.5167 8.1002 12.7L10.2502 14.85C10.4502 15.05 10.6835 15.15 10.9502 15.15C11.2169 15.15 11.4502 15.05 11.6502 14.85L15.9002 10.6C16.1002 10.4 16.1959 10.1667 16.1872 9.90004C16.1785 9.63337 16.0829 9.40004 15.9002 9.20004C15.7002 9.00004 15.4629 8.89604 15.1882 8.88804C14.9135 8.88004 14.6759 8.97571 14.4752 9.17504L10.9502 12.7ZM8.1502 21.75L6.7002 19.3L3.9502 18.7C3.7002 18.65 3.5002 18.521 3.3502 18.313C3.2002 18.105 3.14186 17.8757 3.1752 17.625L3.4502 14.8L1.5752 12.65C1.40853 12.4667 1.3252 12.25 1.3252 12C1.3252 11.75 1.40853 11.5334 1.5752 11.35L3.4502 9.20004L3.1752 6.37504C3.14186 6.12504 3.2002 5.89571 3.3502 5.68704C3.5002 5.47837 3.7002 5.34937 3.9502 5.30004L6.7002 4.70004L8.1502 2.25004C8.28353 2.03337 8.46686 1.88737 8.7002 1.81204C8.93353 1.73671 9.16686 1.74937 9.4002 1.85004L12.0002 2.95004L14.6002 1.85004C14.8335 1.75004 15.0669 1.73737 15.3002 1.81204C15.5335 1.88671 15.7169 2.03271 15.8502 2.25004L17.3002 4.70004L20.0502 5.30004C20.3002 5.35004 20.5002 5.47937 20.6502 5.68804C20.8002 5.89671 20.8585 6.12571 20.8252 6.37504L20.5502 9.20004L22.4252 11.35C22.5919 11.5334 22.6752 11.75 22.6752 12C22.6752 12.25 22.5919 12.4667 22.4252 12.65L20.5502 14.8L20.8252 17.625C20.8585 17.875 20.8002 18.1044 20.6502 18.313C20.5002 18.5217 20.3002 18.6507 20.0502 18.7L17.3002 19.3L15.8502 21.75C15.7169 21.9667 15.5335 22.1127 15.3002 22.188C15.0669 22.2634 14.8335 22.2507 14.6002 22.15L12.0002 21.05L9.4002 22.15C9.16686 22.25 8.93353 22.2627 8.7002 22.188C8.46686 22.1134 8.28353 21.9674 8.1502 21.75Z" fill="#014122" />
+                    </svg>
+                    Verified
+                </span>
+            </div>
+            <div class="verification-section">
+                <h3>Email Address</h3>
+                <span class="verified-status">
+                   ${artist.email}
+                </span>
+            </div>
+
+            <div class="info-grid mt-4">
+
+                <!-- Legal Name -->
+                <div class="info-field">
+                    <div class="field-data">
+                        <label class="field-label">Legal Name</label>
+                        <span class="value">${ artist.name + ' ' + artist.last_name }</span>
+                        </div>
+                    </div>
+
+                    <!-- Email Address (Not Editable) -->
+                    <div class="info-field">
+                        <div class="field-data">
+                            <label class="field-label">Email Address</label>
+                            <span class="value">${ artist.email }</span>
+                        </div>
+                    </div>
+</form>
+    </div>`;
+            modalContent.innerHTML = htmlContent;
+
+            profileModal.classList.add('active')
+        }
     </script>
 @endsection

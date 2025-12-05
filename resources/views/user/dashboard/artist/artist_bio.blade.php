@@ -174,20 +174,16 @@
 @section('content')
     <div class="bio-page-wrapper">
         <div class="bio-card-container">
-            <form>
-                {{--                @csrf --}}
-
+            <form action="{{route('dashboard.save_artist_bio')}}" method="post" enctype="multipart/form-data">
+                @csrf
                 <h2 class="card-title-heading">Bio & Tattoo Styles</h2>
-
                 <!-- Bio Section -->
                 <div class="bio-box">
                     <label class="label" style="color:#5E8082; font-size: 12px;">Bio</label>
                     <p class="value" style="margin-top: 20px;">
-                        I've been tattooing professionally for 7+ years, specializing in fine line and black & gray realism.
-                        Passionate about detail, storytelling through art, and creating a calm, professional experience for
-                        every client.
+                       {{$artist->bio ?? 'Bio not added yet...'}}
                     </p>
-                    <textarea name="bio" class="editable-textarea" style="display: none;">I've been tattooing professionally for 7+ years, specializing in fine line and black & gray realism. Passionate about detail, storytelling through art, and creating a calm, professional experience for every client.</textarea>
+                    <textarea name="bio" class="editable-textarea" style="display: none;">{{$artist->bio ?? ''}}</textarea>
 
                     {{-- Humne button ko aek naye div ke andar daal diya hai --}}
                     <div class="bio-box-footer">
@@ -196,32 +192,19 @@
                 </div>
 
                 <!-- Tattoo Styles Section -->
-                <h3 class="section-title">Social Accounts</h3> {{-- Title "Social Accounts" hai image mein, aap isko "Tattoo Styles" kar sakte hain --}}
+                <h3 class="section-title">Tattoo Styles</h3> {{-- Title "Social Accounts" hai image mein, aap isko "Tattoo Styles" kar sakte hain --}}
 
                 <div class="style-list">
-                    @php
-                        $styles = [
-                            ['emoji' => '✍️', 'name' => 'Fine Line', 'checked' => true, 'value' => 'fine_line'],
-                            ['emoji' => '🎨', 'name' => 'Watercolor', 'checked' => true, 'value' => 'watercolor'],
-                            [
-                                'emoji' => '⚫',
-                                'name' => 'Black and Grey',
-                                'checked' => false,
-                                'value' => 'black_and_grey',
-                            ],
-                            ['emoji' => '🌈', 'name' => 'Color', 'checked' => false, 'value' => 'color'],
-                            ['emoji' => '🖼️', 'name' => 'Realism', 'checked' => false, 'value' => 'realism'],
-                        ];
-                    @endphp
-
-                    @foreach ($styles as $style)
+                    @foreach ($tattoo_styles as $style)
                         <div class="style-option-box">
-                            <span class="style-label">{{ $style['emoji'] }} {{ $style['name'] }}</span>
+                            <span class="style-label">{{ $style->icon }} {{ $style->name }}</span>
                             {{-- Yahan ab hum checkbox istemal kar rahe hain --}}
                             <div class="custom-checkbox">
-                                <input type="checkbox" id="style_{{ $style['value'] }}" name="tattoo_styles[]"
-                                    value="{{ $style['value'] }}" {{ $style['checked'] ? 'checked' : '' }}>
-                                <label for="style_{{ $style['value'] }}"></label>
+                                <input type="checkbox" id="style_{{ $style->name }}" name="tattoo_styles[]"
+                                    value="{{ $style->id }}"
+                                    {{ $artist->tattooStyleIds ? (in_array($style->id, $artist->tattooStyleIds) ? 'checked' : '') : '' }}
+                                >
+                                <label for="style_{{ $style->name }}"></label>
                             </div>
                         </div>
                     @endforeach

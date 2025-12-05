@@ -807,7 +807,7 @@
                                         <path
                                             d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
                                     </svg>
-                                    {{ $studio->city ?? 'City Not Set' }}, {{ $studio->country ?? 'Country Not Set' }}
+                                    {{ $studio->city ?? '' }}{{($studio->city && $studio->country) ? ', ' : ''}}{{ $studio->country ? strtoupper($studio->country) : '' }}
                                 </p>
                             </div>
                         </div>
@@ -1221,7 +1221,6 @@
         </div>
         @endif
         <!-- Success Modal -->
-        <!-- Success Modal -->
         <div class="modal-overlay" id="success-modal">
             <div class="modal-content">
                 <img class="success-icon" src="{{ asset('assets/web/thumbs_up.png') }}" alt="Thumbs Up">
@@ -1257,7 +1256,7 @@
     <script>
         const studios = [{
                 name: "{{ $studio->studio_name ?? $studio->name }}",
-                location: "{{ $studio->city ?? 'N/A' }}, {{ $studio->country ?? 'N/A' }}",
+                location: "{{ $studio->city ?? '' }}{{($studio->city && $studio->country) ? ', ' : ''}}{{ $studio->country ?? '' }}",
                 lat: {{ $studio->latitude && is_numeric($studio->latitude) ? $studio->latitude : '40.7128' }},
                 lng: {{ $studio->longitude && is_numeric($studio->longitude) ? $studio->longitude : '-74.0060' }},
                 logo: "{{ $studio->studio_logo ? asset($studio->studio_logo) : asset('assets/web/dashboard/default_1.png') }}",

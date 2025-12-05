@@ -79,10 +79,15 @@ class StudioController extends Controller
         }
     }
 
-    public function searchArtist()
+    public function guestArtists()
     {
+        $artists = User::all()->where('user_type','artist')->where('verification_status', 2);
+        $artists->load([
+            'tattooStyles',
+        ]);
         return view('user.dashboard.studio.studio_search_artist', [
-            'pageTitle' => __('studio_guest_artist_search_heading')
+            'pageTitle' => __('studio_guest_artist_search_heading'),
+            'artists' => $artists,
         ]);
     }
     public function studioRequest()
